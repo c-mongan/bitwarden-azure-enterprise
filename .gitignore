@@ -17,6 +17,7 @@ saml-cert-base64.txt
 install-answers.txt
 enterprise-config.json
 bitwarden-expect.exp
+azure-saml-complete.json
 
 # Temporary and log files
 *.log
