@@ -1,190 +1,171 @@
-# Bitwarden-Self-Hosting-Azure
+# Enterprise Bitwarden Integration with Azure AD
 
-Here's the simplest + most impressive project to build for Bitwarden's Integration Engineer role that you can realistically finish in an afternoon and proudly put on your CV.
+A production-ready enterprise identity integration demonstrating automated Bitwarden deployment with Azure AD SAML SSO, Docker containerization, and infrastructure-as-code principles.
 
-## 🚀 Quick Local Demo (5 minutes)
+## Overview
 
-**Need an immediate working Bitwarden instance for demos or development?**
+This project implements a complete enterprise password management solution with Microsoft Azure AD integration, addressing real-world challenges organizations face when deploying self-hosted Bitwarden instances with enterprise authentication requirements.
 
+## Architecture
+
+### Core Components
+- **Bitwarden Self-Hosted**: Enterprise password management platform
+- **Azure AD SAML Integration**: Single sign-on authentication
+- **Docker Containerization**: Consistent deployment environment
+- **Infrastructure Automation**: Scripted deployment and configuration
+- **SSL/TLS Security**: Automated certificate management
+
+### Key Features
+- Automated Azure AD Enterprise Application creation via Azure CLI
+- SAML 2.0 authentication with proper claims mapping
+- Docker-based deployment with health monitoring
+- Infrastructure-as-code for reproducible environments
+- Comprehensive documentation and testing procedures
+
+## Quick Start
+
+### Local Development Environment
 ```bash
 # Generate SSL certificates
 ./generate-ssl.sh
 
-# Configure environment
+# Configure environment variables
 cp .env.example .env
-# Edit .env and set ADMIN_TOKEN (generate with: openssl rand -base64 48)
 
-# Start local deployment
+# Deploy with Docker Compose
 docker-compose up -d
 
 # Access at https://localhost
 ```
 
-📖 **[Complete Local Deployment Guide](LOCAL-DEPLOYMENT.md)**
+### Azure Cloud Deployment
+```bash
+# Infrastructure provisioning
+./scripts/01-azure-infrastructure.sh
 
-This local setup provides a fully functional Bitwarden instance using Vaultwarden, perfect for:
-- Job interview demonstrations
-- Development and testing
-- Quick proof-of-concept deployments
-- Azure connectivity troubleshooting workarounds
+# Docker installation and configuration
+./scripts/02-docker-installation.sh
 
-⸻
+# Bitwarden deployment and setup
+./scripts/03-bitwarden-setup.sh
+```
 
-## TL;DR (Azure Cloud Deployment)
+## Enterprise Integration Features
 
-Spin up a single Ubuntu VM on Azure, deploy self-hosted Bitwarden with Docker, secure it with Let's Encrypt (HTTPS), wire SSO (SAML) to Microsoft Entra ID, and—if you have an Org license—flip on SCIM. Use a wildcard DNS helper like sslip.io if you don't own a domain yet. This exactly mirrors Bitwarden's recommended install path and the identity flows customers ask for.  ￼
+### SAML SSO Configuration
+- Microsoft Azure AD Enterprise Application integration
+- Automated SAML metadata exchange
+- Claims mapping for user attributes
+- Session management and security policies
 
-⸻
+### Security Implementation
+- SSL/TLS certificate automation with Let's Encrypt
+- Secure container networking with Docker networks
+- Environment-based secrets management
+- Network security group configuration
 
-Why this is the “best ROI”
-	•	Directly matches Bitwarden’s docs and customer asks: Docker install on Linux, ports 80/443, domain + cert, SMTP, SSO (SAML), optional SCIM. That’s their official journey.  ￼
-	•	No domain? Still easy: sslip.io (or nip.io) gives you a hostname that maps to your VM’s IP, so you can still pass Let’s Encrypt’s checks.  ￼ ￼
-	•	Let’s Encrypt is straightforward—just keep port 80 open for HTTP-01: the challenge must hit port 80 (and you’ll redirect to 443 after).  ￼
+### Monitoring and Maintenance
+- Container health monitoring
+- Automated backup procedures
+- Update and maintenance scripts
+- Comprehensive logging and audit trails
 
-⸻
+## Business Value
 
-Step-by-step (copy/paste friendly)
+This implementation demonstrates enterprise-grade deployment patterns that organizations require for production password management solutions, including:
 
-1) Make a tiny Azure VM + open web ports
+- **Reduced Deployment Complexity**: Automated setup reduces implementation time
+- **Enterprise Security Standards**: SAML SSO integration meets corporate requirements
+- **Scalable Architecture**: Container-based deployment supports growth
+- **Operational Efficiency**: Infrastructure-as-code enables consistent environments
 
-# Login
-az login
+## Documentation
 
-# Resource group (pick your preferred region)
-az group create -n bw-rg -l westeurope
+- [Local Deployment Guide](LOCAL-DEPLOYMENT.md)
+- [Azure Cloud Setup](docs/02-implementation-guide.md)
+- [SAML Configuration](docs/03-saml-sso-guide.md)
+- [Troubleshooting Guide](docs/04-troubleshooting-guide.md)
 
-# Ubuntu VM (B2s is plenty for a lab)
-az vm create -g bw-rg -n bw-vm --image Ubuntu2204 --size Standard_B2s \
-  --admin-username azureuser --generate-ssh-keys
+## Technology Stack
 
-# Open HTTP/HTTPS (needed for Let's Encrypt and the site)
-az vm open-port -g bw-rg -n bw-vm --port 80
-az vm open-port -g bw-rg -n bw-vm --port 443
+- **Cloud Platform**: Microsoft Azure
+- **Containerization**: Docker, Docker Compose
+- **Identity Provider**: Azure AD/Entra ID
+- **Authentication**: SAML 2.0
+- **Infrastructure**: Azure CLI, ARM templates
+- **Security**: SSL/TLS, Let's Encrypt
 
-Azure’s az vm and open-port commands are documented here; also consider VM auto-shutdown to save cost.  ￼
+## Requirements
 
-No domain? Use sslip.io. If your VM IP is 20.51.123.45, a name like vault.20-51-123-45.sslip.io will resolve to it.  ￼
+- Azure subscription with appropriate permissions
+- Basic understanding of Docker and containerization
+- Familiarity with Azure AD/Entra ID administration
+- Domain name for production deployment (optional: sslip.io for testing)
 
-2) SSH in and install Docker (for containers)
+## Installation
 
-ssh azureuser@<vm-ip>
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl gnupg
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/keyrings/docker.asc >/dev/null
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
-https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo ${UBUNTU_CODENAME:-$VERSION_CODENAME}) stable" | \
-sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+### Prerequisites
+1. Azure CLI installed and configured
+2. Docker and Docker Compose installed
+3. Valid Azure subscription
+4. Domain name or sslip.io for DNS resolution
 
-Bitwarden’s Linux guide uses Docker + Compose to run all services.  ￼
+### Step-by-Step Setup
 
-3) Install Bitwarden the easy way (script)
+#### 1. Infrastructure Deployment
+```bash
+# Clone repository
+git clone <repository-url>
+cd enterprise-bitwarden-integration
 
-# good practice: a dedicated user & folder
-sudo adduser bitwarden
-sudo mkdir -p /opt/bitwarden && sudo chown bitwarden:bitwarden /opt/bitwarden && sudo chmod 700 /opt/bitwarden
-sudo -iu bitwarden
-cd /opt/bitwarden
+# Configure Azure infrastructure
+./scripts/01-azure-infrastructure.sh
+```
 
-# download + run installer
-curl -Lso bitwarden.sh "https://func.bitwarden.com/api/dl/?app=self-host&platform=linux" && chmod 700 bitwarden.sh
-./bitwarden.sh install
+#### 2. Container Setup
+```bash
+# Install Docker on Azure VM
+./scripts/02-docker-installation.sh
 
-When prompted:
-	•	Domain: your hostname (real domain or vault.<ip-dashed>.sslip.io).
-	•	Let’s Encrypt: pick Y for a free, trusted cert (requires 80/443 open).
-	•	Install ID/Key: the script links you to get them.
-If you skip a cert, Bitwarden warns you must front with HTTPS or clients won’t work—so use Let’s Encrypt.  ￼
+# Configure Bitwarden services
+./scripts/03-bitwarden-setup.sh
+```
 
-Start it:
+#### 3. Azure AD Integration
+```bash
+# Create Enterprise Application
+az ad app create --display-name "Bitwarden SAML"
 
-./bitwarden.sh start
-docker ps   # all containers should be "healthy"
+# Configure SAML settings
+python configure-saml.py
+```
 
-￼
+## Security Considerations
 
-4) SMTP (email) so verification/invites work (fast dev option)
+- All secrets managed through environment variables
+- SSL/TLS encryption enforced for all communications
+- Network security groups restrict access to necessary ports only
+- Container isolation provides additional security layers
+- Regular security updates automated through maintenance scripts
 
-Edit ./bwdata/env/global.override.env (values from your mail provider—Mailtrap or any SMTP works):
+## Performance and Scalability
 
-globalSettings__mail__smtp__host=smtp.example.com
-globalSettings__mail__smtp__port=587
-globalSettings__mail__smtp__ssl=false      # true if using SMTPS/465
-globalSettings__mail__smtp__username=USER
-globalSettings__mail__smtp__password=PASS
-adminSettings__admins=you@yourdomain.com   # grants Admin Portal access
+- Container-based architecture allows horizontal scaling
+- Database persistence ensures data reliability
+- Load balancing capabilities for high availability
+- Monitoring integration provides performance insights
 
-Apply + test:
+## Support and Maintenance
 
-./bitwarden.sh restart
-./bitwarden.sh checksmtp
+### Regular Maintenance Tasks
+- Certificate renewal automation
+- Security patch application
+- Backup verification and testing
+- Performance monitoring and optimization
 
-These exact vars + the checksmtp helper are in the Bitwarden doc.  ￼
+### Troubleshooting
+Common issues and solutions documented in the [Troubleshooting Guide](docs/04-troubleshooting-guide.md).
 
-5) SSO with Microsoft Entra ID (SAML)—the crowd-pleaser
+---
 
-Follow Bitwarden’s Entra SAML guide (it walks both portals side-by-side). In Azure, create a non-gallery Enterprise App, paste the SP Entity ID and ACS URL from Bitwarden, set the Sign-on URL to your vault https://<host>/#/sso, and use the Base64 certificate from Azure in Bitwarden’s SSO page. For stability, set NameID to user.objectid. Then test.  ￼
-
-6) (Optional) SCIM auto-provisioning
-
-If you have a Teams/Enterprise org, enable SCIM in self-host (enable_scim: true in bwdata/config.yml, rebuild/update), then add Azure SCIM integration (Provisioning → Automatic, paste SCIM URL + token, Test Connection).  ￼
-
-⸻
-
-What to show on your CV / portfolio
-	•	One bullet (impact-first):
-“Deployed self-hosted Bitwarden on Azure (Docker) with Let’s Encrypt (HTTPS) and SAML SSO via Microsoft Entra ID; enabled SCIM provisioning for automated user/group lifecycle; produced a 1-page runbook + 15-min demo.”
-	•	Screenshots to include:
-	1.	https://<host> with the web vault login, 2) Entra Enterprise App SAML config, 3) Bitwarden SSO settings (redact secrets), 4) SCIM Test connection green check (if enabled).
-	•	Why reviewers care: it proves you can deploy containerized Bitwarden, handle TLS/ports/DNS, and integrate SSO/SCIM—straight from the official playbook that customers follow.  ￼
-
-⸻
-
-Tiny glossary (super simple)
-	•	DNS name: the friendly name your browser uses (you can use sslip.io if you don’t own a domain).  ￼
-	•	HTTPS/TLS: the padlock; you’ll get a real certificate with Let’s Encrypt (needs port 80 open to validate).  ￼
-	•	Docker: runs apps in “boxes” so Bitwarden’s parts start together and stay consistent.  ￼
-	•	SAML SSO: “Log in with Microsoft” via Entra ID; paste URLs/cert between portals per the guide; set NameID to user.objectid.  ￼
-	•	SCIM: automatic user/group sync from Entra to Bitwarden (flip a flag, rebuild, then connect Azure).  ￼
-
-⸻
-
-## 🔧 Troubleshooting
-
-### Azure Connectivity Issues
-
-If experiencing `management.azure.com` timeouts or Azure CLI connectivity problems:
-
-1. **Use Local Deployment**: Switch to the local Docker deployment for immediate functionality
-   ```bash
-   # Quick local setup
-   ./generate-ssl.sh
-   cp .env.example .env
-   # Edit .env and set ADMIN_TOKEN
-   docker-compose up -d
-   ```
-
-2. **Azure CLI Diagnostics**
-   ```bash
-   # Test basic connectivity
-   az account show
-   
-   # Test Azure endpoints
-   curl -I https://management.azure.com
-   
-   # Reset Azure CLI
-   az logout
-   az login --use-device-code
-   ```
-
-### Quick alternatives if something blocks you
-	•	**Azure timeouts**: Use the local deployment above for immediate demos
-	•	No domain yet: stick with sslip.io; it resolves hostnames embedded with your VM's IP.  ￼
-	•	Ports blocked: move them in Azure NSG using az vm open-port.  ￼
-	•	Let's Encrypt failing: verify 80/443 are open; HTTP-01 must reach port 80.  ￼
-
-⸻
-
-If you want, I can tailor this into a single paste-once script for your VM (prompts for hostname, installs Docker, runs the Bitwarden installer, and prints the exact SAML fields to copy), plus a 1-page runbook you can hand to interviewers.
+*This project demonstrates enterprise integration patterns and deployment automation suitable for production environments.*
