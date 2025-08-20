@@ -33,3 +33,6 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Development planning (private)
+DEVELOPMENT-PLAN.md
