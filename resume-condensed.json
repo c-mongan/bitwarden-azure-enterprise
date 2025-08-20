@@ -1,0 +1,110 @@
+{
+  "selectedTemplate": 1,
+  "headings": {
+    "work": "",
+    "education": "",
+    "skills": "",
+    "projects": ""
+  },
+  "basics": {
+    "name": "Conor Mongan",
+    "email": "monganconor1@gmail.com",
+    "phone": "0894970351",
+    "website": "www.linkedin.com/in/conor-mongan",
+    "location": {
+      "address": "Dublin, Ireland"
+    },
+    "summary": "Platform Engineer with 2+ years of enterprise experience at Microsoft and Datadog, specializing in cloud automation, identity integration, and DevOps solutions. Built enterprise-grade Azure infrastructure, automated CI/CD processes, and SAML SSO integrations."
+  },
+  "education": [
+    {
+      "institution": "Technological University Dublin (TU Dublin)",
+      "location": "Aungier Street, Dublin 2",
+      "area": "Business Computing",
+      "studyType": "B.Sc. Business Computing",
+      "startDate": "Sep 2017",
+      "endDate": "Oct 2022",
+      "gpa": "Upper Second Class Honours (2:1)"
+    }
+  ],
+  "work": [
+    {
+      "company": "Microsoft",
+      "location": "Ireland",
+      "position": "Service Engineer",
+      "website": "",
+      "startDate": "Jun 2024",
+      "endDate": "Present",
+      "highlights": [
+        "Engineer critical infrastructure and automation for Microsoft's Engineering Tools and Services Team (E5365), supporting build, test, and deployment pipelines across multiple platforms.",
+        "Built Azure DevOps automation tools including build failure correlation systems and automated reporting solutions using Azure Functions and REST APIs.",
+        "Maintain 99%+ SLA compliance through proactive monitoring, automated alerting, and rapid incident response across enterprise-scale infrastructure.",
+        "Reduced manual operational overhead by 40% through intelligent automation of service deployments and troubleshooting workflows."
+      ]
+    },
+    {
+      "company": "Datadog",
+      "location": "Dublin, Ireland",
+      "position": "Technical Support Engineer II",
+      "website": "",
+      "startDate": "Oct 2023",
+      "endDate": "May 2024",
+      "highlights": [
+        "Specialized in Datadog's RUM, Synthetics, and APM products, providing advanced technical support for enterprise observability solutions.",
+        "Developed internal troubleshooting guides and documentation, improving team efficiency and knowledge sharing.",
+        "Collaborated with engineering teams to improve product features based on customer feedback and usage patterns."
+      ]
+    },
+    {
+      "company": "Datadog",
+      "location": "Dublin, Ireland",
+      "position": "Technical Support Engineer I",
+      "website": "",
+      "startDate": "Aug 2022",
+      "endDate": "Oct 2023",
+      "highlights": [
+        "Provided first-line technical support for Datadog's monitoring and observability platform serving enterprise customers.",
+        "Collaborated with product engineering teams to relay customer feedback, contributing to 3 feature improvements.",
+        "Resolved complex integration issues for customers deploying monitoring solutions across multi-cloud environments."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Programming Languages",
+      "keywords": ["Python", "Dart", "TypeScript", "Java", "Shell/Bash"]
+    },
+    {
+      "name": "Cloud & DevOps",
+      "keywords": ["Azure CLI", "Docker", "Azure Functions", "CI/CD Automation", "Azure DevOps", "Infrastructure-as-Code"]
+    },
+    {
+      "name": "Enterprise Security & Identity",
+      "keywords": ["SAML 2.0", "Azure AD/Entra ID", "Microsoft Graph API", "SSL/TLS", "Certificate Management"]
+    },
+    {
+      "name": "Monitoring & APIs",
+      "keywords": ["Datadog RUM/APM/Synthetics", "REST APIs", "Container Health Monitoring", "Performance Optimization"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Enterprise Bitwarden Integration with Azure AD",
+      "description": "Built automated enterprise identity integration with Azure AD SAML SSO, Docker containerization, and infrastructure-as-code deployment. Reduced customer setup time by 90% through complete automation of complex enterprise security workflows.",
+      "url": "https://github.com/c-mongan/bitwarden-azure-enterprise",
+      "keywords": ["Azure CLI", "SAML 2.0", "Docker", "Microsoft Graph API", "Enterprise Security", "Infrastructure-as-Code"]
+    },
+    {
+      "name": "Automated Build Status Reporter",
+      "description": "Created Azure Functions automation that processes Azure DevOps pipeline data and delivers formatted status reports to Microsoft Teams, eliminating daily manual monitoring tasks.",
+      "url": "Internal Microsoft repositories",
+      "keywords": ["Azure Functions", "Python", "Azure DevOps API", "Process Automation", "Microsoft Teams Integration"]
+    },
+    {
+      "name": "Qualife Wellness Tracker",
+      "description": "Developed Flutter mobile app with Datadog RUM integration for real-time user analytics and wellness tracking using Firestore and API integrations.",
+      "url": "https://github.com/c-mongan/Qualife",
+      "keywords": ["Flutter", "Firestore", "Datadog RUM", "Mobile Development", "API Integration"]
+    }
+  ]
+}
