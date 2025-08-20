@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      # Basic configuration
+      DOMAIN: "https://localhost"
+      WEBSOCKET_ENABLED: "true"
+      SIGNUPS_ALLOWED: "true"
+      INVITATIONS_ALLOWED: "true"
+      
+      # Security settings
+      ADMIN_TOKEN: "${ADMIN_TOKEN}"
+      
+      # Email configuration disabled for local deployment
+      
+      # Database location
+      DATA_FOLDER: "/data"
+      
+      # Logging
+      LOG_LEVEL: "info"
+      
+      # Enable web vault
+      WEB_VAULT_ENABLED: "true"
+      
+      # SSO Configuration
+      SSO_ENABLED: "true"
+      SSO_ONLY: "false"
+    volumes:
+      - ./vaultwarden-data:/data
+    ports:
+      - "8080:80"
+      - "3012:3012"  # WebSocket port
+    networks:
+      - bitwarden-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: bitwarden-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - vaultwarden
+    networks:
+      - bitwarden-net
+
+networks:
+  bitwarden-net:
+    driver: bridge
+
+volumes:
+  vaultwarden-data:
