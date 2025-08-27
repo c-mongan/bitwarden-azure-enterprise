@@ -3,7 +3,7 @@
 [![Azure](https://img.shields.io/badge/Azure-0078D4?style=flat&logo=microsoft-azure&logoColor=white)](https://portal.azure.com)
 [![Bitwarden](https://img.shields.io/badge/Bitwarden-175DDC?style=flat&logo=bitwarden&logoColor=white)](https://bitwarden.com)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://docker.com)
-[![Status](https://img.shields.io/badge/Status-✅%20Running-brightgreen)](https://vault.20-160-104-163.sslip.io)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://github.com/conormongan/Bitwarden-Self-Hosting-Azure)
 
 A **production-ready enterprise Bitwarden deployment** on Microsoft Azure with **SAML SSO integration**, demonstrating enterprise-grade password management infrastructure with automated deployment, monitoring, and Azure AD authentication.
 
@@ -51,7 +51,7 @@ This repository provides **complete automation** to deploy:
 
 ### Step 1: Clone Repository
 ```bash
-git clone https://github.com/your-username/Bitwarden-Self-Hosting-Azure.git
+git clone https://github.com/conormongan/Bitwarden-Self-Hosting-Azure.git
 cd Bitwarden-Self-Hosting-Azure
 ```
 
@@ -87,14 +87,14 @@ chmod +x scripts/01-azure-infrastructure.sh
 ### Step 4: Setup Bitwarden on VM (10 minutes)
 ```bash
 # Get your VM's public IP from previous step
-VM_IP=$(az vm show -d --resource-group bitwarden-rg --name bitwarden-vm --query publicIps --output tsv)
+VM_IP=$(az vm show -d --resource-group bw-rg --name bw-vm --query publicIps --output tsv)
 echo "Your VM IP: $VM_IP"
 
 # SSH to your VM
 ssh azureuser@$VM_IP
 
 # On the VM, run setup scripts:
-curl -O https://raw.githubusercontent.com/your-username/Bitwarden-Self-Hosting-Azure/main/vm-setup.sh
+# Copy vm-setup.sh to VM first, then:
 chmod +x vm-setup.sh
 ./vm-setup.sh
 
@@ -225,7 +225,7 @@ bitwarden-nginx           # Reverse proxy
 - **Server Response**: ~1.8 seconds (needs optimization)
 - **Database**: Microsoft SQL Server
 - **Uptime**: 8+ days continuous
-- **SSL**: Let's Encrypt (A+ rating)
+- **SSL**: Let's Encrypt certificates
 - **Containers**: All healthy
 
 **Recommended Optimizations:**
@@ -354,7 +354,7 @@ openssl x509 -in /opt/bitwarden/bwdata/ssl/your-hostname/certificate.crt -text -
 - [ ] **Monitoring**: Health checks and alerts configured
 
 ### Security Best Practices
-1. **Admin Token**: Generated securely (current: see `configure-saml.py`)
+1. **Admin Token**: Generate with `openssl rand -base64 48` and store securely
 2. **Database**: Encrypted at rest on Premium SSD
 3. **Network**: Azure NSG restricts access
 4. **Containers**: Isolated Docker networks
